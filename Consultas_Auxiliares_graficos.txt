@@ -1,0 +1,1188 @@
+--##################################################   #CONSULTAS  AUXILIARES PARA GRÁFICOS  #################################################################################################
+-- &&&&&&&&&&&&&&&&& CAPÍTULO ASEGURADOS &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&666
+-- Gr+afico 2.1.1 Evolución Histórica de Asegurados
+-- a)
+select 'Tip' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic where ( tipo_afiliado like '%AFI%' )
+group by 'Tip'
+--b)
+select 'Pen' tipo_beneficiario, count(distinct cedula) n_pen
+from afi_pen_dep_18_dic
+where tipo_afiliado in('PEN', 'PEN-DEP')
+group by 'Pen' 
+--c)
+--Insertar consulta
+
+-- Grafico 2.1.1 Evolución Histórica de Asegurados y Beneficiarioas
+-- a)
+select 'SSC' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic 
+where (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES') or (sector like '%SSC%' )
+group by 'SSC'
+--b)
+select 'SSCTNRH' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic 
+where (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES') or (sector like '%SSC%' ) or (sector like '%SEM%')
+group by 'SSCTNRH'
+--c)
+select 'SSCTNRHSV' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic 
+where (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES') or (sector like '%SSC%' ) or (sector like '%SEM%') or (sector like '%VOL%')
+group by 'SSCTNRHSV'
+--d)
+--Insertar consulta
+
+-- Grafico 2.1.1 Evolución Histórica de Pensionistas
+-- a)
+select 'SGO' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic where (sector like '%SEM%') or (sector like '%PRI%' or sector like '%PUB%' )
+group by 'SGO'
+--b)
+select 'SSCSP' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic where (seguro='SSC') or (seguro='SGO')
+group by 'SSCSP'
+--c)
+select 'SGOSV' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic where (sector in('PRI','PUB','VOL') )
+group by 'SGOSV'
+--d)
+select 'SPRT' as tipo, count(distinct cedula) n_afi
+from afi_pen_dep_18_dic where (seguro='SGO') or(seguro='RT')
+group by 'SPRT'
+
+--Grafico 2.3.2: Dsitribución de Asegurados por Edad pára cada Tipo y Sexo
+--Parte a)
+select 'Dependiente' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic 
+where tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES'
+group by 'Dependiente',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+-- Parte b)
+select 'Seguro General Obligatorio' tipo_beneficiario, 4 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where sector like '%PRI%' or sector like '%PUB%' 
+group by 'Seguro General Obligatorio',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte c)
+select 'Total Pensionistas' tipo_beneficiario, 10 as orden, count(distinct cedula) n_pen,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic
+where tipo_afiliado like '%PEN%'
+group by 'Total Pensionistas',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+
+--Grafico 2.3.3: Dsitribución de Aseguradas por Edad pára cada Rango de Edad
+--Parte a)
+select 'JefSSCP' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC')) and sexo='M' 
+group by 'Jefe de familia',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte b)
+select 'SSC' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')) and sexo='M' 
+group by 'SSC',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte c)
+select 'SSCTNRH' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES') or (sector='SEM')) and sexo='M' 
+group by 'SSCTMRH',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte d)
+select 'SSCTNRHSV' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                                or (sector='SEM') or (sector='VOL')) and sexo='M' 
+group by 'SSCTMRHSV',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte e)
+select 'SSCAFI' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic 
+where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                               or (sector='SEM') or (sector='VOL') or (sector like '%PRI%' or sector like '%PUB%' )) and sexo='M' 
+group by 'SSCAFI',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte f)
+select 'SSCAFISP' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic 
+where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                               or (sector='SEM') or (sector='VOL') or (sector like '%PRI%' or sector like '%PUB%' ) or ( seguro like '%SGO%')) and sexo='M' 
+group by 'SSCAFISP',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+
+--Grafico 2.3.4: Dsitribución de Asegurados por Edad pára cada Rango de Edad
+--Parte a)
+select 'JefSSCP' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC')) and sexo='H' 
+group by 'Jefe de familia',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte b)
+select 'SSC' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')) and sexo='H' 
+group by 'SSC',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte c)
+select 'SSCTNRH' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES') or (sector='SEM')) and sexo='H' 
+group by 'SSCTMRH',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte d)
+select 'SSCTNRHSV' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                                or (sector='SEM') or (sector='VOL')) and sexo='H' 
+group by 'SSCTMRHSV',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte e)
+select 'SSCAFI' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic 
+where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                               or (sector='SEM') or (sector='VOL') or (sector like '%PRI%' or sector like '%PUB%' )) and sexo='H' 
+group by 'SSCAFI',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+--Parte f)
+select 'SSCAFISP' tipo_beneficiario, 1 as orden, count(distinct cedula) n_afi,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic 
+where ((sector='SSC') or (seguro='SSC') or (tipo_dep like 'CONYUGES' or tipo_dep like 'HIJOS' or tipo_dep like 'OTROS DEPENDIENTES')
+                               or (sector='SEM') or (sector='VOL') or (sector like '%PRI%' or sector like '%PUB%' ) or ( seguro like '%SGO%')) and sexo='H' 
+group by 'SSCAFISP',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end
+     
+--Grafico 2.3.5: Base de Aportación Promedio del Seguro General Obligatorio , sin TNRH, por Sexo y Edad
+--Parte a)
+select 'SGO' tipo_beneficiario, sum(SALARIO_SGO)/count(distinct cedula) as aporte,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where sector like '%PRI%' or sector like '%PUB%' 
+group by 'SGO',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+
+--Grafico 2.3.6:Pensiones Promedio del Seguro de Invalidez, Vejez y Muerte por Sexo y Edad
+--Parte a)
+select 'SP' tipo_beneficiario as tipo, 
+sum( coalesce( PENSION_SGO_VEJ ,0) + coalesce( PENSION_SGO_inv ,0) + coalesce( PENSION_SGO_DIS ,0) + coalesce( PENSION_SGO_ORF ,0) + coalesce( PENSION_SGO_VIU ,0))/count(distinct cedula) as aportacion,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where seguro like '%SGO%'
+group by 'SP',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+
+--Grafico 2.3.7: Distribución de Bases de aportación al Seguro General Obligatorio, sin TNRRH, por Sexo y Edad
+--Parte a)
+select 'SGOFEM' as tipo_beneficiario, sum( salario_sgo ) as salario,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic
+where relacion_laboral in('DEPENDIENTE', 'INDEPENDIENTE') and sexo='M'
+group by 'SGOFEM',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+--Parte b)
+select 'SGOMAS' as tipo_beneficiario, sum( salario_sgo ) as salario,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic
+where relacion_laboral in('DEPENDIENTE', 'INDEPENDIENTE') and sexo='H'
+group by 'SGOMAS',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+--Parte c)
+select 'SGO' as tipo_beneficiario, sum( salario_sgo ) as salario,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic
+where relacion_laboral in('DEPENDIENTE', 'INDEPENDIENTE') 
+group by 'SGO',
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+
+--Grafico 2.3.7: Distribución de Pensiones del Seguro de Invalidez, Vejez y Muerte, por Sexo y Edad
+--Parte a)
+select 'IVMFEM' tipo_beneficiario, 
+sum( coalesce( PENSION_SGO_VEJ ,0) + coalesce( PENSION_SGO_inv ,0) + coalesce( PENSION_SGO_DIS ,0) + coalesce( PENSION_SGO_ORF ,0) + coalesce( PENSION_SGO_VIU ,0))as pension,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where seguro like '%SGO%' and sexo='M'
+group by 'IVMFEM', 
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+--Parte b)
+select 'IVMMAS' tipo_beneficiario, 
+sum( coalesce( PENSION_SGO_VEJ ,0) + coalesce( PENSION_SGO_inv ,0) + coalesce( PENSION_SGO_DIS ,0) + coalesce( PENSION_SGO_ORF ,0) + coalesce( PENSION_SGO_VIU ,0))as pension,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where seguro like '%SGO%' and sexo='H'
+group by 'IVMMAS', 
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
+ --Parte c)    
+select 'IVM' tipo_beneficiario, 
+sum( coalesce( PENSION_SGO_VEJ ,0) + coalesce( PENSION_SGO_inv ,0) + coalesce( PENSION_SGO_DIS ,0) + coalesce( PENSION_SGO_ORF ,0) + coalesce( PENSION_SGO_VIU ,0))as pension,
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end as edad
+from afi_pen_dep_18_dic where seguro like '%SGO%'
+group by 'IVM', 
+case when edad_dic_2018 <=2 then 2 
+     when edad_dic_2018 <=5 then 5
+     when edad_dic_2018 <=8 then 8
+     when edad_dic_2018 <=11 then 11
+     when edad_dic_2018 <=14 then 14
+     when edad_dic_2018 <=17 then 17
+     when edad_dic_2018 <=20 then 20
+     when edad_dic_2018 <=24 then 24
+     when edad_dic_2018 <=29 then 29
+     when edad_dic_2018 <=34 then 34
+     when edad_dic_2018 <=39 then 39
+     when edad_dic_2018 <=44 then 44
+     when edad_dic_2018 <=49 then 49
+     when edad_dic_2018 <=54 then 54
+     when edad_dic_2018 <=59 then 59
+     when edad_dic_2018 <=64 then 64
+     when edad_dic_2018 <=69 then 69 
+     when edad_dic_2018 <=74 then 74
+     when edad_dic_2018 <=79 then 79
+     when edad_dic_2018 <=84 then 84
+     when edad_dic_2018 is null then 999
+     else 85 end 
